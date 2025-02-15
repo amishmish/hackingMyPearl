@@ -9,11 +9,11 @@ st.text_input("Please enter a stock ticker from the Yahoo Finance library", key=
 
 timePeriod = convertTime(st.selectbox(
     'What time period would you like to look at?',
-     ['1 day', '5 days', '1 month', '6 months', '1 year', '5 years', 'YTD', 'max']))
+     ['5 days', '1 month', '6 months', '1 year', '5 years', 'YTD', 'max']))
 
 stock = yf.Ticker(st.session_state.ticker)
 hist = stock.history(period=timePeriod)
-
+st.write(stock.info)
 if not hist.empty:
     st.write(hist)
 else:
