@@ -8,20 +8,21 @@ from newsapi import NewsApiClient
 headliner = NewsApiClient(api_key='9b0a343d2ac04b83b150a36d651ffe2c')
 
 # candleplot returns those basic stock plots with the red and green thingies 
-def candleplot(data, upCol, downCol):
-    up = data[data.Close >= data.Open]
-    down = data[data.Open < data.Close]
+def candleplot(data, upcol, downcol):
+    up = data[data.Close >= data.Open] 
+    down = data[data.Close < data.Open]
 
-    fig, ax = plt.subplots(figsize=(10, 5))  # Create a figure and axis
-    
-    ax.bar(up.index, up.Close-up.Open, width=0.3, bottom=up.Open, color=upCol) 
-    ax.bar(up.index, up.High-up.Close, width=0.03, bottom=up.Close, color=upCol) 
-    ax.bar(up.index, up.Low-up.Open, width=0.03, bottom=up.Open, color=upCol) 
+    fig,ax = plt.subplots()
+
+    ax.bar(up.index, up.Close-up.Open, 1, bottom=up.Open, color=upcol) 
+    ax.bar(up.index, up.High-up.Close, 0.1, bottom=up.Close, color=upcol) 
+    ax.bar(up.index, up.Low-up.Open, 0.1, bottom=up.Open, color=upcol) 
     
     # Plotting down prices of the stock 
-    ax.bar(down.index, down.Close-down.Open, width=0.3, bottom=down.Open, color=downCol) 
-    ax.bar(down.index, down.High-down.Open, width=0.03, bottom=down.Open, color=downCol) 
-    ax.bar(down.index, down.Low-down.Close, width=0.03, bottom=down.Close, color=downCol)
+    ax.bar(down.index, down.Close-down.Open, 1, bottom=down.Open, color=downcol) 
+    ax.bar(down.index, down.High-down.Open, 0.1, bottom=down.Open, color=downcol) 
+    ax.bar(down.index, down.Low-down.Close, 0.1, bottom=down.Close, color=downcol) 
+
     return fig
 
 def get_the_news(stock):

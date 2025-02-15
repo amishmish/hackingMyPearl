@@ -16,7 +16,7 @@ st.text_input("Please enter a stock ticker from the Yahoo Finance library", key=
 tick = st.session_state.ticker
 stock = yf.Ticker(tick)
 hist = stock.history(period='6mo')
-plot1 = candleplot(hist, 'green', 'red')
+plot1 = candleplot(hist, 'red', 'blue')
 
 st.header(stock.info.get('shortName'))
 st.write(stock.info.get('shortName'))
