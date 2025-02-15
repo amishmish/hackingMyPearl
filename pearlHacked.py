@@ -21,7 +21,6 @@ st.header(stock.info.get('shortName'))
 st.write(stock.info)
 
 if not hist.empty:
-    st.write(stock.info.get('shortName'))
     plot1 = candleplot(hist, '#bc4749', '#386641')
     st.pyplot(plot1)
     st.write(get_the_news(stock))
