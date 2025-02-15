@@ -5,7 +5,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from newsapi import NewsApiClient
 
-newsapi = NewsApiClient(api_key='9b0a343d2ac04b83b150a36d651ffe2c')
+headliner = NewsApiClient(api_key='9b0a343d2ac04b83b150a36d651ffe2c')
 
 # candleplot returns those basic stock plots with the red and green thingies 
 def candleplot(data, upCol, downCol):
@@ -24,6 +24,7 @@ def candleplot(data, upCol, downCol):
     ax.bar(down.index, down.Low-down.Close, width=0.03, bottom=down.Close, color=downCol)
     return fig
 
-def get_the_news():
-    #something
-    print('hi')
+def get_the_news(stock):
+    word = stock.info.get('shortName')
+    headlines = headliner.get_everything(q= word, sort_by= 'relevancy' ,language= "en", page_size =5)
+    return headlines['articles']
