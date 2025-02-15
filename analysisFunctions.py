@@ -25,8 +25,3 @@ def candleplot(data, upcol, downcol):
     ax.bar(down.index, down.Low-down.Close, 0.1, bottom=down.Close, color=downcol) 
 
     return fig
-
-def get_the_news(stock):
-    word = stock.info.get('shortName')
-    headlines = headliner.get_everything(q= word, sort_by= 'relevancy' ,language= "en", page_size =5)
-    return headlines['articles']
