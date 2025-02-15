@@ -3,6 +3,7 @@ import yfinance as yf
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+from newsapi import NewsApiClient
 
 # candleplot returns those basic stock plots with the red and green thingies 
 def candleplot(data, upCol, downCol):
@@ -20,3 +21,7 @@ def candleplot(data, upCol, downCol):
     ax.bar(down.index, down.High-down.Open, width=0.03, bottom=down.Open, color=downCol) 
     ax.bar(down.index, down.Low-down.Close, width=0.03, bottom=down.Close, color=downCol)
     return fig
+
+def get_the_news():
+    #something
+    print('hi')
