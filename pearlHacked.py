@@ -4,6 +4,9 @@ import yfinance as yf
 import numpy as np
 import matplotlib.pyplot as plt
 from analysisFunctions import candleplot
+from newsapi import NewsApiClient
+
+newsapi = NewsApiClient(api_key='9b0a343d2ac04b83b150a36d651ffe2c')
 
 st.title('Stock Analyzer')
 
