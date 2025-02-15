@@ -11,6 +11,7 @@ headliner = NewsApiClient(api_key='9b0a343d2ac04b83b150a36d651ffe2c')
 def candleplot(data, upcol, downcol):
     up = data[data.Close >= data.Open] 
     down = data[data.Close < data.Open]
+    plt.figure(facecolor='#f2e8cf')
 
     fig,ax = plt.subplots()
 

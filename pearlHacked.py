@@ -16,15 +16,13 @@ st.text_input("Please enter a stock ticker from the Yahoo Finance library", key=
 tick = st.session_state.ticker
 stock = yf.Ticker(tick)
 hist = stock.history(period='6mo')
-plot1 = candleplot(hist, 'red', 'blue')
 
 st.header(stock.info.get('shortName'))
-st.write(stock.info.get('shortName'))
-
-st.write(get_the_news(stock))
+st.write(stock.info)
 
 if not hist.empty:
-    st.write(hist)
+    plot1 = candleplot(hist, '#bc4749', '#386641')
     st.pyplot(plot1)
+    st.write(get_the_news(stock))
 else:
     st.write(st.session_state.ticker + " is not in the Yahoo Finance Library")
