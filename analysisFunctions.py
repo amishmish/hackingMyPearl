@@ -2,7 +2,6 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
-from newsapi import NewsApiClient
 
 
 # candleplot returns those basic stock plots with the red and green thingies 
