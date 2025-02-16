@@ -123,3 +123,5 @@ def app():
         st.write("Stock preferences:")
         for stock in st.session_state.stock_preferences:
             st.write(f"{stock['symbol']}: {stock['shares']} shares")
+        
+        stockPreferences = st.session_state.stock_preferences
