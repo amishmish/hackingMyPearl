@@ -4,6 +4,7 @@ import yfinance as yf
 
 from firebase_admin import credentials, auth, firestore
 import os
+from analysisFunctions import create_dashboard
 
 cred = credentials.Certificate('.env.json')
 firebase_admin.initialize_app(cred)
@@ -81,10 +82,9 @@ def app():
                 st.markdown('Please log in using your email and password')
             
     if st.session_state.signout:
-        st.text('Name ' + st.session_state.username)
-        st.text('Email ' + st.session_state.useremail)
         st.button('Sign out', on_click=signOutUser)
 
+        st.subheader('Add another stock!')
         new_stock = st.text_input('Enter a stock ticker to add to your preferences')
         new_stock_shares = st.number_input('Shares:', min_value=0, step=1)
 
@@ -120,8 +120,11 @@ def app():
             else:
                 st.warning('Make sure ticker is valid and shares is greater than zero')
 
-        st.write("Stock preferences:")
+        st.subheader("Your Stocks")
         for stock in st.session_state.stock_preferences:
             st.write(f"{stock['symbol']}: {stock['shares']} shares")
         
         stockPreferences = st.session_state.stock_preferences
+
+        create_dashboard(stockPreferences)
+        

@@ -4,6 +4,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 from google import genai
+import yfinance as yf
 import os
 from dotenv import load_dotenv
 
@@ -183,3 +184,54 @@ def refine_paragraph(inList):
     output = output_text + f"\n It seems that {inList[0]} is the better stock based on a preliminary analysis of the stock."
 
     return output
+
+def allMyStockData(given):
+    fakeHist = yf.Ticker('tsla').history('6mo')
+    fakeHist.Open = 0 * fakeHist.Open
+    fakeHist.Close = 0  * fakeHist.Close
+    fakeHist.High = 0*fakeHist.High
+    fakeHist.Low = 0*fakeHist.Low
+
+    realHist = fakeHist
+
+    for item in given:
+        current = yf.Ticker(item['symbol'])
+        now = current.history(period = '6mo')
+        amount = item['shares']
+        now.Open = now.Open*amount
+        now.Close = now.Close*amount
+        now.High = now.High*amount
+        now.Low = now.Low*amount
+
+        realHist.Open = realHist.Open + now.Open
+        realHist.Close = realHist.Close + now.Close
+        realHist.High = realHist.High + now.High
+        realHist.Low = realHist.Low + now.Low
+    
+    return realHist
+
+def create_dashboard(given):
+    data = allMyStockData(given)
+
+    plot = candleplot(data, 'w', '#386641', '#bc4749')
+    st.pyplot(plot)
+
+    info = {'Symbol':['Company Name','Qunatity', 'CurrentPrice', 'Volume', 'TrailingEPS']}
+    for item in given:
+        inform = yf.Ticker(item['symbol']).info
+        info[item['symbol']] = [inform.get('shortName'), item['shares'], inform.get('regularMarketPrice'), inform.get('volume'),inform.get('trailingEps') ]
+
+    result = client.models.generate_content(
+        model = 'gemini-2.0-flash', 
+        contents = f'You are a financial advisor. I am asking expert advise about my portfolio: {given}. Provide me a 3 sentence summary about how my portfolio is doing today. Please refrain from restating any portion of the prompt. The information about the portfolio is in this dictionary: {info}'
+    )
+
+    output_text = result.candidates[0].content.parts[0].text
+
+    st.write(output_text)
+
+
+
+
+
+
