@@ -3,12 +3,16 @@ import yfinance as yf
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
 from newsapi import NewsApiClient
 
 headliner = NewsApiClient(api_key='9b0a343d2ac04b83b150a36d651ffe2c')
 
 # candleplot returns those basic stock plots with the red and green thingies 
 def candleplot(data, upcol, downcol):
+
+    data.index = pd.to_datetime(data.index)
+
     up = data[data.Close >= data.Open] 
     down = data[data.Close < data.Open]
     plt.figure(facecolor='#f2e8cf')
@@ -24,4 +28,11 @@ def candleplot(data, upcol, downcol):
     ax.bar(down.index, down.High-down.Open, 0.1, bottom=down.Open, color=downcol) 
     ax.bar(down.index, down.Low-down.Close, 0.1, bottom=down.Close, color=downcol) 
 
+    ax.xaxis.set_major_locator(mdates.AutoDateLocator())
+    ax.xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m-%d'))
+    fig.autofmt_xdate()
+
     return fig
+
+def analyze_stock(tick):
+    infortick.info
