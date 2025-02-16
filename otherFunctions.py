@@ -1,6 +1,6 @@
 from newsapi import NewsApiClient
 
-headliner = NewsApiClient(api_key='9b0a343d2ac04b83b150a36d651ffe2c')
+newsapi = NewsApiClient(api_key=os.getenv(NEWS_API_KEY))
 
 def convertTime(period):
     if 'day' in period:

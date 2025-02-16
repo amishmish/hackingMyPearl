@@ -1,4 +1,6 @@
 import streamlit as st
+import os
+from dotenv import load_dotenv, dotenv_values
 import pandas as pd
 import yfinance as yf
 import numpy as np
@@ -8,23 +10,27 @@ from analysisFunctions import candleplot
 from newsapi import NewsApiClient
 
 
-newsapi = NewsApiClient(api_key='9b0a343d2ac04b83b150a36d651ffe2c')
+newsapi = NewsApiClient(api_key=os.getenv(NEWS_API_KEY))
 
 st.title('Stock Analyzer')
 
-st.text_input("Please enter a stock ticker from the Yahoo Finance library", key="ticker")
-timePeriod = convertTime(st.selectbox(
-    'What time period would you like to look at?',
-     ['5 days', '1 month', '6 months', '1 year', '5 years', 'YTD', 'max']))
+st.text_input("Please enter a valid stock ticker!", key="ticker")
+
 
 tick = st.session_state.ticker
 stock = yf.Ticker(tick)
-hist = stock.history(period=timePeriod)
 
-if not hist.empty:
+if not stock.actions.empty:
     st.header(stock.info.get('shortName'))
+    # st.write(stock.info)
+    st.write(stock.info.get('longBusinessSummary'))
 
     st.divider()
+    timePeriod = convertTime(st.selectbox(
+    'What time period would you like to look at?',
+     ['YTD', '5 days', '1 month', '6 months', '1 year', '5 years', 'max']))
+    hist = stock.history(period=timePeriod)
+    
     if timePeriod in ['5d', '1mo', 'YTD']:
         plot1 = candleplot(hist,'d', '#386641', '#bc4749')
     elif timePeriod in ['6mo', '1y']:
