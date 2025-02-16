@@ -14,7 +14,7 @@ def convertTime(period):
 
 def get_the_news(stock):
     word = stock.info.get('shortName')
-    headlines = headliner.get_everything(q=word, sort_by='relevancy', language="en", page_size=5)
+    headlines = headliner.get_everything(q=word, sort_by='relevancy', language="en", page_size=10)
     
     articles = headlines.get('articles', [])  
     return articles 
