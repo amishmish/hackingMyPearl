@@ -51,24 +51,46 @@ if not stock.actions.empty:
     st.divider()
     st.header('News')
     news = get_the_news(stock)
+
     i = 0
     index = 0
-    while i < 3:
+    valids = []
+    while i < 3 and index < 10:
         valid = True
         for value in news[index]:
             if news[index][value] == None:
                 valid = False
-        
+    
         if valid:
-            url = news[index]['url']
-            st.image(news[index]['urlToImage'])
-            st.subheader(news[index]['title'])
-            st.write(news[index]['description'])
-            st.markdown(f'[Read More About This]({url})\n\n')
+            valids.append(index)
             i += 1
-
         index += 1
-        if index == 9:
-            break
+
+    col1, col2, col3 = st.columns(3)
+
+    if len(valids) > 0:
+        with col1:
+            url = news[valids[0]]['url']
+            st.image(news[valids[0]]['urlToImage'])
+            st.subheader(news[valids[0]]['title'])
+            st.write(news[valids[0]]['description'])
+            st.markdown(f'[Read More About This]({url})\n\n')
+    
+    if len(valids) > 1:
+        with col2:
+            url = news[valids[1]]['url']
+            st.image(news[valids[1]]['urlToImage'])
+            st.subheader(news[valids[1]]['title'])
+            st.write(news[valids[1]]['description'])
+            st.markdown(f'[Read More About This]({url})\n\n')
+
+    if len(valids) > 2:
+        with col3:
+            url = news[valids[2]]['url']
+            st.image(news[valids[2]]['urlToImage'])
+            st.subheader(news[valids[2]]['title'])
+            st.write(news[valids[2]]['description'])
+            st.markdown(f'[Read More About This]({url})\n\n')
+
 else:
     st.write(st.session_state.ticker + " is not in the Yahoo Finance Library")

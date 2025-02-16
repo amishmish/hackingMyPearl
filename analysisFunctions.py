@@ -3,7 +3,12 @@ import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
+from google import genai
+import os
+from dotenv import load_dotenv
 
+load_dotenv()
+client = genai.Client(api_key =  os.environ.get('GEMINI_API_KEY'))
 
 # candleplot returns those basic stock plots with the red and green thingies 
 def candleplot(inData, group, upcol, downcol):
@@ -162,6 +167,17 @@ def compare_stocks(tick1, tick2):
         paragraph += f'{name2} is less volatile than {name1}. '
     
     if score2 > score1:
-        return score2
+        return [score2, paragraph]
     else:
-        return score1
+        return [score1, paragraph]
+    
+
+def refine_paragraph(inList):
+    result = client.models.generate_content(
+        mdoel = 'gemini-2.0-flash', 
+        contents = f'Rewrite the following paragraph to contain the same information but be better written: {inList[1]}'
+    )
+
+    output = result + f"\n It seems that {inList[0]} is the better stock based on a preliminary analysis of the stock."
+
+    return output

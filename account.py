@@ -11,7 +11,7 @@ firebase_admin.initialize_app(cred)
 db = firestore.client()
 
 def app(): 
-    st.title("Haiiiii")
+    st.title("Welcome!")
 
     if 'username' not in st.session_state:
         st.session_state.username = ''
