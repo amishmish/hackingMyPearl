@@ -81,14 +81,14 @@ def compare_stocks(tick1, tick2):
     name1 = inform1.get('shortName')
     name2 = inform2.get('shortName')
 
-    if inform1.get('trailingPE') > inform2.get*('trailingPE'):
+    if inform1.get('trailingPE') > inform2.get('trailingPE'):
         paragraph += f'{name2} seems to have a lower PE ratio.'
         score2 += 1
     else:
         paragraph += f'{name1} seems to have a lower PE ratio.'
         score1 += 1
 
-    if inform1.get('epsCurrentYear') > inform2.get*('epsCurrentYear'):
+    if inform1.get('epsCurrentYear') > inform2.get('epsCurrentYear'):
         paragraph += f'{name1} seems to have a greater earnings per ratio.'
         score1 += 1 
     else:
@@ -167,17 +167,19 @@ def compare_stocks(tick1, tick2):
         paragraph += f'{name2} is less volatile than {name1}. '
     
     if score2 > score1:
-        return [score2, paragraph]
+        return [name2, paragraph]
     else:
-        return [score1, paragraph]
+        return [name1, paragraph]
     
 
 def refine_paragraph(inList):
     result = client.models.generate_content(
-        mdoel = 'gemini-2.0-flash', 
+        model = 'gemini-2.0-flash', 
         contents = f'Rewrite the following paragraph to contain the same information but be better written: {inList[1]}'
     )
 
-    output = result + f"\n It seems that {inList[0]} is the better stock based on a preliminary analysis of the stock."
+    output_text = result.candidates[0].content.parts[0].text
+
+    output = output_text + f"\n It seems that {inList[0]} is the better stock based on a preliminary analysis of the stock."
 
     return output
