@@ -36,9 +36,11 @@ if not hist.empty:
                 valid = False
         
         if valid:
+            url = news[index]['url']
+            st.image(news[index]['urlToImage'])
             st.subheader(news[index]['title'])
             st.write(news[index]['description'])
-            #st.markdown(news[index][''])
+            st.markdown(f'[Read More About This]({url})\n\n')
             i += 1
 
         index += 1

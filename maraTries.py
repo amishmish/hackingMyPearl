@@ -18,3 +18,6 @@ if not hist.empty:
     st.write(hist)
 else:
     st.write(st.session_state.ticker + " is not in the Yahoo Finance Library")
+
+st.image('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQbNcbwE9P_iSw9jzMfRAk_-Bz1dQjW9vfeWQ&s')
+st.markdown("[Click me](https://www.linkedin.com/in/mishmishra/)")
