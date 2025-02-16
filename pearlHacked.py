@@ -9,8 +9,8 @@ from otherFunctions import get_the_news, convertTime
 from analysisFunctions import candleplot
 from newsapi import NewsApiClient
 
-
-newsapi = NewsApiClient(api_key=os.getenv(NEWS_API_KEY))
+load_dotenv()
+newsapi = NewsApiClient(api_key=os.environ.get('NEWS_API_KEY'))
 
 st.title('Stock Analyzer')
 

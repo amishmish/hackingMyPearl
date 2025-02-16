@@ -1,6 +1,9 @@
 from newsapi import NewsApiClient
+import os
+from dotenv import load_dotenv, dotenv_values
 
-newsapi = NewsApiClient(api_key=os.getenv(NEWS_API_KEY))
+load_dotenv()
+newsapi = NewsApiClient(api_key=os.environ.get('NEWS_API_KEY'))
 
 def convertTime(period):
     if 'day' in period:
@@ -14,7 +17,7 @@ def convertTime(period):
 
 def get_the_news(stock):
     word = stock.info.get('shortName')
-    headlines = headliner.get_everything(q=word, sort_by='relevancy', language="en", page_size=10)
+    headlines = newsapi.get_everything(q=word, sort_by='relevancy', language="en", page_size=10)
     
     articles = headlines.get('articles', [])  
     return articles 
