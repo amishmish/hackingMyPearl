@@ -6,7 +6,7 @@ import yfinance as yf
 import numpy as np
 import matplotlib.pyplot as plt
 from otherFunctions import get_the_news, convertTime
-from analysisFunctions import candleplot
+from analysisFunctions import candleplot, lineplot
 from newsapi import NewsApiClient
 
 load_dotenv()
@@ -29,14 +29,23 @@ if not stock.actions.empty:
     timePeriod = convertTime(st.selectbox(
     'What time period would you like to look at?',
      ['YTD', '5 days', '1 month', '6 months', '1 year', '5 years', 'max']))
-    hist = stock.history(period=timePeriod)
     
-    if timePeriod in ['5d', '1mo', 'YTD']:
-        plot1 = candleplot(hist,'d', '#386641', '#bc4749')
-    elif timePeriod in ['6mo', '1y']:
-        plot1 = candleplot(hist,'w', '#386641', '#bc4749')
-    else: 
-        plot1 = candleplot(hist, 'm', '#386641', '#bc4749')
+    typePlot = st.selectbox(
+    'What type of graph would you like?',
+    ['Candleplot', 'Lineplot'])
+
+    hist = stock.history(period=timePeriod)
+
+    if typePlot == 'Lineplot':
+        plot1 = lineplot(hist)
+    else:
+        if timePeriod in ['5d', '1mo', 'YTD']:
+            plot1 = candleplot(hist,'d', '#386641', '#bc4749')
+        elif timePeriod in ['6mo', '1y']:
+            plot1 = candleplot(hist,'w', '#386641', '#bc4749')
+        else: 
+            plot1 = candleplot(hist, 'm', '#386641', '#bc4749')
+
     st.pyplot(plot1)
 
     st.divider()
