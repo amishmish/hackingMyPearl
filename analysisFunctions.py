@@ -40,5 +40,8 @@ def candleplot(inData, group, upcol, downcol):
 
     return fig
 
-def analyze_stock(tick):
-    infortick.info
+def compare_stocks(tick1, tick2):
+    score1 = 0
+    score2 = 0 
+
+    
