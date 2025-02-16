@@ -1,4 +1,5 @@
 #imports
+import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
@@ -49,7 +50,14 @@ def lineplot(inData):
 
     yvals = (inData.Close + inData.Open)/2
 
-    plt.plot(inData.index, yvals)
+    sorted_data = yvals.sort_index(axis=0, ascending=True)
+    diff = sorted_data.iloc[-1] - sorted_data.iloc[0]
+
+    if diff < 0:
+        ax.plot(inData.index, yvals, color = '#bc4749')
+    else:
+        ax.plot(inData.index, yvals, color = '#386641')
+
 
     ax.xaxis.set_major_locator(mdates.AutoDateLocator())
     ax.xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m-%d'))
@@ -152,3 +160,8 @@ def compare_stocks(tick1, tick2):
     else:
         score2+= 1 
         paragraph += f'{name2} is less volatile than {name1}. '
+    
+    if score2 > score1:
+        return score2
+    else:
+        return score1
