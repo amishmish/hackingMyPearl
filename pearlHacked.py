@@ -21,11 +21,20 @@ tick = st.session_state.ticker
 stock = yf.Ticker(tick)
 hist = stock.history(period=timePeriod)
 
-st.header(stock.info.get('shortName'))
-
 if not hist.empty:
-    plot1 = candleplot(hist, '#bc4749', '#386641')
+    st.header(stock.info.get('shortName'))
+
+    st.divider()
+    if timePeriod in ['5d', '1mo', 'YTD']:
+        plot1 = candleplot(hist,'d', '#386641', '#bc4749')
+    elif timePeriod in ['6mo', '1y']:
+        plot1 = candleplot(hist,'w', '#386641', '#bc4749')
+    else: 
+        plot1 = candleplot(hist, 'm', '#386641', '#bc4749')
     st.pyplot(plot1)
+
+    st.divider()
+    st.header('News')
     news = get_the_news(stock)
     i = 0
     index = 0
