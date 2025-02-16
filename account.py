@@ -1,5 +1,6 @@
 import streamlit as st
 import firebase_admin
+import yfinance as yf
 
 from firebase_admin import credentials, auth, firestore
 import os
@@ -40,8 +41,7 @@ def app():
             st.success('Login Successful')
 
         except Exception as e:
-            st.warning(f'Login Failed: {str(e)}')  # Show actual error message
-            print(f"Login Error: {e}")  # Print to Streamlit logs for debugging
+            st.warning(f'Login Failed: {str(e)}')
 
     def signOutUser():
         st.session_state.signout = False
@@ -75,7 +75,7 @@ def app():
                 user_ref.set({
                     'email': email,
                     'username': username,
-                    'stock_preferences': []  # Empty list for stock preferences
+                    'stock_preferences': []
                 })
 
                 st.markdown('Please log in using your email and password')
@@ -83,32 +83,43 @@ def app():
     if st.session_state.signout:
         st.text('Name ' + st.session_state.username)
         st.text('Email ' + st.session_state.useremail)
-        st.button('Sign out', on_click = signOutUser)
+        st.button('Sign out', on_click=signOutUser)
 
-        st.write("Your stock preferences:", st.session_state.stock_preferences)
-
-        # Add stock preferences
         new_stock = st.text_input('Enter a stock ticker to add to your preferences')
+        new_stock_shares = st.number_input('Shares:', min_value=0, step=1)
+
         if st.button('Add to preferences'):
-            if new_stock and new_stock not in st.session_state.stock_preferences:
+            if new_stock and new_stock_shares:
                 user_ref = db.collection('users').document(st.session_state.username)
                 user_data = user_ref.get()
 
+                new_stock_entry = {"symbol": new_stock, "shares": new_stock_shares}
+
                 if not user_data.exists:
-                    # Create a new user document if it doesn’t exist
                     user_ref.set({
                         'email': st.session_state.useremail,
                         'username': st.session_state.username,
-                        'stock_preferences': [new_stock]  # Add the first stock
+                        'stock_preferences': [new_stock_entry] 
                     })
+                    st.session_state.stock_preferences = [new_stock_entry]
                 else:
-                    # Update existing stock preferences
-                    updated_preferences = st.session_state.stock_preferences + [new_stock]
+                    existing_preferences = user_data.to_dict().get('stock_preferences', [])
+
+                    updated_preferences = existing_preferences.copy()
+                    for stock in updated_preferences:
+                        if stock["symbol"] == new_stock:
+                            stock["shares"] += new_stock_shares
+                            break
+                    else:
+                        updated_preferences.append(new_stock_entry)
+
                     user_ref.update({'stock_preferences': updated_preferences})
+                    st.session_state.stock_preferences = updated_preferences
 
-                # Update session state
-                st.session_state.stock_preferences.append(new_stock)
-                st.success(f'{new_stock} added to your preferences!')
+                st.success(f'{new_stock} ({new_stock_shares} shares) added to your preferences!')
+            else:
+                st.warning('Make sure ticker is valid and shares is greater than zero')
 
-        # Display updated preferences
-        st.write("Updated stock preferences:", st.session_state.stock_preferences)
+        st.write("Stock preferences:")
+        for stock in st.session_state.stock_preferences:
+            st.write(f"{stock['symbol']}: {stock['shares']} shares")
