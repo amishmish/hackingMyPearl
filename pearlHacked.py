@@ -26,6 +26,8 @@ st.header(stock.info.get('shortName'))
 if not hist.empty:
     plot1 = candleplot(hist, '#bc4749', '#386641')
     st.pyplot(plot1)
-    st.write(get_the_news(stock))
+    news = get_the_news(stock)
+    for i in range(0,3):
+        st.write(news[i]['title'])
 else:
     st.write(st.session_state.ticker + " is not in the Yahoo Finance Library")
