@@ -6,7 +6,7 @@ from firebase_admin import credentials, auth, firestore
 import os
 from analysisFunctions import create_dashboard
 
-cred = credentials.Certificate('.env.json')
+cred = credentials.Certificate(FIREBASE)
 firebase_admin.initialize_app(cred)
 
 db = firestore.client()
