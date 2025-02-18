@@ -7,11 +7,13 @@ import os
 from analysisFunctions import create_dashboard
 firebase_creds = st.secrets["FIREBASE"]
 
+private_key = firebase_creds["private_key"].replace("\\n", "\n")
+
 cred = credentials.Certificate({
     "type": firebase_creds["type"],
     "project_id": firebase_creds["project_id"],
     "private_key_id": firebase_creds["private_key_id"],
-    "private_key": firebase_creds["private_key"].replace("\\n", "\n"),
+    "private_key": private_key,
     "client_email": firebase_creds["client_email"],
     "client_id": firebase_creds["client_id"],
     "auth_uri": firebase_creds["auth_uri"],
