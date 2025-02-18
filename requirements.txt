@@ -18,7 +18,7 @@ MarkupSafe==3.0.2
 matplotlib
 mdurl==0.1.2
 narwhals==1.26.0
-newsapi
+newsapi-python
 numpy==2.2.3
 packaging==24.2
 pandas==2.2.3
