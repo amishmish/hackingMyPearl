@@ -5,8 +5,22 @@ import yfinance as yf
 from firebase_admin import credentials, auth, firestore
 import os
 from analysisFunctions import create_dashboard
+firebase_creds = st.secrets["FIREBASE"]
 
-cred = credentials.Certificate(FIREBASE)
+cred = credentials.Certificate({
+    "type": firebase_creds["type"],
+    "project_id": firebase_creds["project_id"],
+    "private_key_id": firebase_creds["private_key_id"],
+    "private_key": firebase_creds["private_key"].replace("\\n", "\n"),
+    "client_email": firebase_creds["client_email"],
+    "client_id": firebase_creds["client_id"],
+    "auth_uri": firebase_creds["auth_uri"],
+    "token_uri": firebase_creds["token_uri"],
+    "auth_provider_x509_cert_url": firebase_creds["auth_provider_x509_cert_url"],
+    "client_x509_cert_url": firebase_creds["client_x509_cert_url"],
+    "universe_domain": firebase_creds["universe_domain"]
+})
+
 firebase_admin.initialize_app(cred)
 
 db = firestore.client()
