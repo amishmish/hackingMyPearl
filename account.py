@@ -10,6 +10,8 @@ from analysisFunctions import create_dashboard
 
 auth = firebase_admin.auth
 
+firebase_creds = st.secrets["FIREBASE"]
+
 if not firebase_admin._apps:
     cred = credentials.Certificate({
     "type": firebase_creds["type"],
