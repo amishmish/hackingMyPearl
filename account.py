@@ -218,13 +218,12 @@ def app():
             else:
                 st.warning('Make sure ticker is valid and shares is greater than zero')
 
-        st.subheader("Your Stocks")
-        for stock in st.session_state.stock_preferences:
-            st.write(f"{stock['symbol']}: {stock['shares']} shares")
-        
-        stockPreferences = st.session_state.stock_preferences
-
-        create_dashboard(stockPreferences)
+            st.subheader("Your Stocks")
+            for stock in st.session_state.stock_preferences:
+                st.write(f"{stock['symbol']}: {stock['shares']} shares")
+            
+            stockPreferences = st.session_state.stock_preferences
+            create_dashboard(stockPreferences)
 
 def logIn():
     st.title('Stock Dashboard')
@@ -249,11 +248,11 @@ def logInFinal(email):
             st.session_state.stock_preferences = user_data.to_dict().get('stock_preferences', [])
         else:
             st.session_state.user_full_name = 'No name found in profile'
-        '''
+        
         st.session_state.signout = True
         st.session_state.signedout = True
         st.success('Log in Successful')
-        '''
+        
     except Exception as e:
         st.warning(f'Login Failed: {str(e)}')
     
