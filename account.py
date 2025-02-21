@@ -23,7 +23,7 @@ if not firebase_admin._apps:
     "auth_provider_x509_cert_url": firebase_creds["auth_provider_x509_cert_url"],
     "client_x509_cert_url": firebase_creds["client_x509_cert_url"],
     "universe_domain": firebase_creds["universe_domain"]
-})
+    })
 
     firebase_admin.initialize_app(cred)
 
